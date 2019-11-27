@@ -4,7 +4,8 @@
 This application takes in a mixtapes JSON file, a changes JSON file, and an output JSON file. The changes JSON filename describes changes to make to the mixtapes JSON file. The resulting file is output to the defined output file path. The format for these files is described in the 'How to Use' section below.
 
 ## Requirements
-This code has been run and tested on Ruby 2.5.5 and a Mac
+This code has been run and tested on Ruby 2.5.5 and a Mac<br>
+bundler v 2.0.2 is needed to install dependencies
 
 ## Installation
 Clone this project:
@@ -16,6 +17,18 @@ Install dependencies
 ```
 $ bundle install
 ```
+
+If this throws a "can't find gem bundler with executable bundle (Gem::GemNotFoundException)" error, install bundler version 2.0.2
+
+```
+gem install bundler -v 2.0.2
+```
+then
+```
+bundle install
+```
+
+
 
 ## Tests
 Tests are written using RSpec. To run tests, in root of folder directory use:
