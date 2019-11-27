@@ -36,7 +36,7 @@ This program follows linux style where:
 In root of folder directory, use:
 
 ```
-$ ruby lib/main.rb <mixtapes_filepath.json> <changes_filepath.json> <output_filepath.json>
+$ ruby main.rb <mixtapes_filepath.json> <changes_filepath.json> <output_filepath.json>
 ```
 
 An example mixtapes file, changes file, and output file are provided for reference.
@@ -44,7 +44,7 @@ An example mixtapes file, changes file, and output file are provided for referen
 The application can be run using the examples in the root folder, just use:
 
 ```
-$ ruby lib/main.rb example-mixtapes.json example-changes.json example-output.json
+$ ruby main.rb example-mixtapes.json example-changes.json example-output.json
 ```
 
 **Format of mixtapes file**
