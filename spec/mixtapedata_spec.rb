@@ -78,7 +78,7 @@ describe "Mixtape class" do
   end
 
   it "saves file" do
-    output_file = "output-test.json"
+    output_file = "spec/output-test.json"
     @mixtapedata.save_file(output_file)
     parsed_output_data = JSON.parse(File.read(output_file))
     expected_output_data = {
