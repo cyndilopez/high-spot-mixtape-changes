@@ -27,6 +27,9 @@ If this doesn't work, try:
 $ bundle exec rspec
 ```
 
+This program follows linux style where:
+1. If it succeeds, it simply writes the output file
+2. If an error occurs, it prints an error message to standard output
 
 ## How to use
 
@@ -44,7 +47,7 @@ The application can be run using the examples in the root folder, just use:
 $ ruby lib/main.rb example-mixtapes.json example-changes.json example-output.json
 ```
 
-**Mixtapes filepath**
+**Format of mixtapes file**
 This is the path to a mixtapes JSON with "users", "playlists", and "songs" fields.
 These fields should have the following parameters:
 
@@ -92,7 +95,7 @@ The JSON should match this format:
 ```
 Note: song and user objects that are referenced by playlists must be included in the mixtapes JSON.
 
-**Changes filepath**
+**Format of changes file**
 The changes filepath is the filepath to the file containing the changes you wish to apply to the mixtapes JSON. The JSON can take three fields which represent playlist actions: "add", "update", and "delete".
 
 The **add** action adds a playlist to the current list of playlists and should be in the following format:
@@ -112,6 +115,8 @@ The value of "add" is an array of objects, which each contain "song" and "user",
 
 In the above example, a playlist is created with "song_ids" that include the song with id of "2" and user with id of "2".
 
+*Error handling* - If a song id or user id provided do not exist in the mixtapes JSON, a message "Skipping add playlist with song ids $song_ids and user id $user_id will be printed to standard output
+
 The **update** action adds an existing song to an existing should be in the following format:
 
 ```
@@ -126,6 +131,8 @@ The **update** action adds an existing song to an existing should be in the foll
 ```
 
 Update takes in an array of objects, which each contain "playlist" and "song" In this example, the song with song id, "1", will be added to playlists' current value of "song_ids". Because "update" takes an array, multiple playlists can be updated.
+
+*Error handling* - If the song id or playlist id provided do not exist in the mixtapes JSON, a message "Skipping update playlist id $playlist_id with song id $song_id" will be printed to standard output
 
 The **remove** action removes a playlist and should be in the following format:
 
@@ -161,10 +168,20 @@ A JSON incorporating all types of changes can be provided as followed:
 }
 ```
 
-**Output filepath**
-The file with the changes applied to mixtapes will be saved in this filepath.
+*Error handling* - If the playlist id provided does not exist in the mixtapes JSON, a message "Skipping remove playlist with id $id" will be printed to standard output
+
+**Output file**
+The file with the changes applied to mixtapes will be saved in this file.
 
 ## Scale this application
-How to handle very large input files and/or very large changes files?
+How to handle very large input files and/or very large changes files -
+There are two problems that would occurs with large files: memory and efficiency. The application could run out of memory when readin g the file. A method, File.each in Ruby, reads line by line, which means not all lines are loaded into memory at the same time. The JSON data could be stored in a database as it's being read. Only after the database is created, would a changes file be read (also line by line) and changes applied to the database, which would be used to return the output file.
+
+To make the process faster, multiple hosts could be used to read the input file and fill the database, and multiple hosts used to apply changes from the changes file to the database, like this:
+
+        DATABASE
+        /  |   \
+       /   |    \
+   HOST1 HOST2  HOSTn
 
 @cyndilopez

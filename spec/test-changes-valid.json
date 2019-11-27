@@ -1,14 +1,14 @@
 {
   "update": [
     {
-      "playlist": "2",
-      "song": "1"
+      "playlist": "1",
+      "song": "32"
     }
   ],
   "add": [
     {
       "songs": [
-        "2"
+        "32"
       ],
       "user": "2"
     }

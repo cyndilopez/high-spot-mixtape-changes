@@ -3,7 +3,11 @@ require_relative 'user'
 require_relative 'playlist'
 require_relative 'update_playlist'
 require_relative 'add_playlist'
+require_relative 'remove_playlist'
 require 'json'
+
+class CustomError < StandardError
+end
 
 class MixTapeData
 
@@ -13,12 +17,22 @@ class MixTapeData
     @songs = {}
     @users = {}
     @playlists = {}
-    @mixtape_hash = parse_file(input_filename)
+    parse_file(input_filename)
   end
 
   def parse_file(filepath)
-    file = File.read(filepath)
-    data_hash = JSON.parse(file)
+    begin
+      file = File.read(filepath)
+      data_hash = JSON.parse(file)
+    rescue Errno::ENOENT
+      raise CustomError.new("Cannot read file")
+    rescue JSON::ParserError
+      raise CustomError.new("Cannot parse file #{filepath} - empty or invalid JSON format")
+    end
+
+    valid_structure?(data_hash, "songs")
+    valid_structure?(data_hash, "playlists")
+    valid_structure?(data_hash, "users")
 
     data_hash["songs"].each do |song_hash|
       @songs[song_hash["id"]] = Song.new(song_hash)
@@ -33,8 +47,19 @@ class MixTapeData
     end
   end
 
+  def valid_structure?(data_hash, field)
+    if !data_hash[field] || !(data_hash[field].is_a?(Array)) || !(data_hash[field].length > 0)
+      raise CustomError.new("#{field} values missing, empty, or not of type array")
+    end
+  end
+
   def save_file(output_filepath)
+    begin
     output_file = File.open(output_filepath, "w")
+    rescue Errno::ENOENT
+      raise CustomError.new("Cannot open file #{output_filepath} for writing")
+    end
+
     output_file.write(to_json)
     output_file.close
   end
@@ -48,30 +73,34 @@ class MixTapeData
   end
 
   def apply_changes(changes_filepath)
-    file = File.read(changes_filepath)
-    changes_hash = JSON.parse(file)
+    begin
+      file = File.read(changes_filepath)
+      changes_hash = JSON.parse(file)
+    rescue Errno::ENOENT
+      raise CustomError.new("Cannot read file #{changes_filepath}")
+    rescue JSON::ParserError
+      raise CustomError.new("Cannot parse file #{changes_filepath} - empty or invalid JSON format")
+    end
+
     apply_action(changes_hash)
   end
 
   def apply_action(changes_hash)
-    changes_hash.each do |action, actions|
+    changes_hash.each do |action, details|
       case action
       when "update"
-        update(actions)
+        update(details)
       when "add"
-        add(actions)
-
-      # when "delete"
-      #   delete(action_hash)
+        add(details)
+      when "remove"
+        remove(details)
       end
-
-
     end
   end
 
-  def update(actions)
-    actions.each do |action_hash|
-      up = UpdatePlaylist.new(action_hash)
+  def update(details)
+    details.each do |detail_hash|
+      up = UpdatePlaylist.new(detail_hash)
       if !up.valid?(self.songs, self.playlists)
         puts "Skipping update playlist id #{up.playlist_id} with song id #{up.song_id}"
         return
@@ -81,9 +110,9 @@ class MixTapeData
     end
   end
 
-  def add(actions)
-    actions.each do |action_hash|
-      add = AddPlaylist.new(action_hash)
+  def add(details)
+    details.each do |detail_hash|
+      add = AddPlaylist.new(detail_hash)
       if !add.valid?(self.songs, self.users)
         puts "Skipping add playlist with song ids #{add.song_ids} and user id #{add.user_id}"
         return
@@ -93,6 +122,17 @@ class MixTapeData
     end
   end
 
+  def remove(details)
+    details.each do |id|
+      rem = RemovePlaylist.new(id)
+      if !rem.valid?(self.playlists)
+        puts "Skipping remove playlist with id #{id}"
+        return
+      else
+        rem.apply_remove(self.playlists)
+      end
+    end
+  end
 end
 
 

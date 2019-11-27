@@ -2,20 +2,17 @@ require_relative 'playlist'
 
 class AddPlaylist
 
-  attr_reader :song_id, :user_id
+  attr_reader :song_ids, :user_id
 
   def initialize(add_hash)
     @user_id = add_hash["user"]
     @song_ids = add_hash["songs"]
-    p @song_ids
   end
 
   def valid?(songs, users)
     # make sure songs exist, and userid
     @song_ids.each do |song_id|
-      p song_id
       if !songs[song_id] && !users[@user_id]
-        p "here"
         return false
 
       end

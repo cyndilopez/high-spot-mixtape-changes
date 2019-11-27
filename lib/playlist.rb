@@ -12,6 +12,10 @@ class Playlist
   end
 
   def add(song_id)
+    # don't append song_id if already in playlists' song_ids
+    if @song_ids.include?(song_id)
+      return
+    end
     @song_ids.append(song_id)
   end
 
