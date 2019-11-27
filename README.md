@@ -1,7 +1,7 @@
 # Highspot Mixtape Changes Challenge
 
 ## Description
-This application takes in a mixtapes JSON file, a changes JSON file, and an output JSON file. The changes JSON filename describes changes to make to the mixtapes JSON file. The resulting file is output to the defined output file path. The format for these files is described in the 'How to Use' section below.
+This application takes in a mixtapes JSON file, a changes JSON file, and an output JSON file. The changes JSON file describes changes to make to the mixtapes JSON file. The resulting file is output to an output filepath that the user provides. The format for these files is described in the 'How to Use' section below.
 
 ## Requirements
 This code has been run and tested on Ruby 2.5.5 and a Mac<br>
@@ -54,9 +54,9 @@ In root of folder directory, use:
 ```
 $ ruby main.rb <mixtapes_filepath.json> <changes_filepath.json> <output_filepath.json>
 ```
+Fill the words in brackets with your own custom filenames.
 
 An example mixtapes file, changes file, and output file are provided for reference.
-
 The application can be run using the examples in the root folder, just use:
 
 ```
@@ -64,7 +64,8 @@ $ ruby main.rb example-mixtapes.json example-changes.json example-output.json
 ```
 Open ```example-output.json```, save(```Command-S```) to format prettily, and check that changes have been applied
 
-**Format of mixtapes file**  This is a JSON with "users", "playlists", and "songs" fields.
+**Format of mixtapes file**<br>
+This is a JSON with "users", "playlists", and "songs" fields.
 These fields should have the following parameters:
 
 -users: id, name
@@ -113,7 +114,8 @@ Note: song and user objects that are referenced by playlists must be included in
 
 *Error handling* - If any of the fields: "songs", "playlists", "users" is missing, or if the fields' values are empty arrays or not of type array, then the program stops running and sends a custom error message to the user
 
-**Format of changes file**  The changes file is a JSON containing the changes you wish to apply to the mixtapes JSON. The JSON can take three fields which represent **playlist** actions: "add", "update", and "delete".
+**Format of changes file**<br>
+The changes file is a JSON containing the changes you wish to apply to the mixtapes JSON. The JSON can take three fields which represent **playlist** actions: "add", "update", and "delete".
 
 The **add** action adds a playlist to the current list of playlists and should be in the following format:
 
@@ -187,7 +189,8 @@ An example JSON object incorporating all possible changes is:
 }
 ```
 
-**Output file**  The file with the changes applied to mixtapes will be saved in this file.
+**Output file**<br>
+The file with the changes applied to mixtapes will be saved in this file.
 
 ## Scale this application
 How to handle very large input files and/or very large changes files -
