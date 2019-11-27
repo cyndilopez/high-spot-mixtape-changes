@@ -1,7 +1,7 @@
 # High Spot Mixtape Changes Challenge
 
 ## Requirements
-This code has been run and tested on Ruby 2.5.5
+This code has been run and tested on Ruby 2.5.5 and a Mac
 
 ## Installation
 Clone this project:
@@ -46,6 +46,7 @@ The application can be run using the examples in the root folder, just use:
 ```
 $ ruby main.rb example-mixtapes.json example-changes.json example-output.json
 ```
+*Tip* - open ```example-output.json```, save(```Command-S```) to format prettily, and check that changes have been applied
 
 **Format of mixtapes file**
 This is a JSON with "users", "playlists", and "songs" fields.
