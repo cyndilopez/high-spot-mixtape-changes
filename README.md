@@ -95,6 +95,8 @@ The JSON should match this format:
 ```
 Note: song and user objects that are referenced by playlists must be included in the mixtapes JSON.
 
+*Error handling* - If any of the fields: "songs, "playlists", "users" is missing, or if the fields' values are empty arrays or not of type array, then the program stops running and sends a custom error message to the user
+
 **Format of changes file**
 The changes filepath is the filepath to the file containing the changes you wish to apply to the mixtapes JSON. The JSON can take three fields which represent playlist actions: "add", "update", and "delete".
 
