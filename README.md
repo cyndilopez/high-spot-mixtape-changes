@@ -24,7 +24,7 @@ $ rspec
 If this doesn't work, try:
 
 ```
-bundle exec rspec
+$ bundle exec rspec
 ```
 
 
@@ -45,7 +45,9 @@ $ ruby lib/main.rb example-mixtapes.json example-changes.json example-output.jso
 ```
 
 **Mixtapes filepath**
-This is the path to a mixtapes JSON with "users", "playlists", and "songs" fields. These fields should have the following parameters:
+This is the path to a mixtapes JSON with "users", "playlists", and "songs" fields.
+These fields should have the following parameters:
+
 users: id, name
 playlists: id, user_id, song_ids
 song: id, artist, title
@@ -88,7 +90,7 @@ The JSON should match this format:
 }
 
 ```
-Note: song and user objects that are referenced by playlists must be included
+Note: song and user objects that are referenced by playlists must be included in the mixtapes JSON.
 
 **Changes filepath**
 The changes filepath is the filepath to the file containing the changes you wish to apply to the mixtapes JSON. The JSON can take three fields which represent playlist actions: "add", "update", and "delete".
