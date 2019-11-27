@@ -180,11 +180,11 @@ How to handle very large input files and/or very large changes files -
 There are two issues that would arise with large files: memory and efficiency. The application could possibly run out of memory when reading the file. A method, File.each in Ruby, reads line by line, which means not all lines are loaded into memory at the same time. The JSON data could be stored in a database as it's being read. Only after the database is created, would a changes file be read (also line by line) and changes applied to the database, which would be used to return the output file.
 
 To make the process faster, multiple hosts could be used to read the input file and fill the database, and multiple hosts used to apply changes from the changes file to the database, like this:
-
+```
         DATABASE
         /  |   \
        /   |    \
    HOST1 HOST2  HOSTn
-
+```
 
 @cyndilopez
