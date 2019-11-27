@@ -190,7 +190,7 @@ An example JSON object incorporating all possible changes is:
 ```
 
 **Output file**<br>
-The file with the changes applied to mixtapes will be saved in this file.
+The file with the changes applied to mixtapes will be saved in this file. It uses the same format as mixtapes.JSON.
 
 ## Scale this application
 How to handle very large input files and/or very large changes files -
